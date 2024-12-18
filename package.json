@@ -10,10 +10,6 @@
         "build": "tsc --build --verbose",
         "test": "node --test './dist/tests/**/*.js'"
     },
-    "exports": {
-        "./package.json": "./package.json",
-        "dist/*": "./dist/*"
-    },
     "keywords": [
         "typescript",
         "node",
