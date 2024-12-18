@@ -1,5 +1,5 @@
 {
-    "name": "nodetest-decorators",
+    "name": "typescript-nodetest-decorators",
     "version": "0.1.0",
     "license": "MIT",
     "type": "module",
@@ -26,7 +26,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/dbo/nodetest-decorators.git"
+        "url": "git+https://github.com/dbo/typescript-nodetest-decorators.git"
     },
     "files": [
         "./dist/nodetest"
