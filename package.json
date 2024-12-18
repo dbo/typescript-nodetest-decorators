@@ -1,0 +1,48 @@
+{
+    "name": "nodetest-decorators",
+    "version": "0.1.0",
+    "license": "MIT",
+    "type": "module",
+    "main": "./dist/nodetest/decorators.js",
+    "types": "./dist/nodetest/decorators.d.ts",
+    "scripts": {
+        "clean": "rm -rf ./dist; rm *.tsbuildinfo || true",
+        "build": "tsc --build --verbose",
+        "test": "node --test './dist/tests/**/*.js'"
+    },
+    "exports": {
+        "./package.json": "./package.json",
+        "dist/*": "./dist/*"
+    },
+    "keywords": [
+        "typescript",
+        "node",
+        "test",
+        "decorators"
+    ],
+    "publishConfig": {
+        "access": "public",
+        "provenance": true
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dbo/nodetest-decorators.git"
+    },
+    "files": [
+        "./dist/nodetest"
+    ],
+    "devDependencies": {
+        "@eslint/compat": "^1.2.4",
+        "@eslint/js": "^9.16.0",
+        "@tsconfig/node22": "^22.0.0",
+        "@types/node": "^22",
+        "eslint": "^9.16.0",
+        "eslint-config-prettier": "^9.1.0",
+        "globals": "^15.13.0",
+        "prettier": "^3.3.3",
+        "typescript-eslint": "^8.18.0"
+    },
+    "peerDependencies": {
+        "typescript": "^5.7.2"
+    }
+}

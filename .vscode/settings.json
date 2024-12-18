@@ -1,0 +1,10 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "search.useIgnoreFiles": false,
+  "explorer.excludeGitIgnore": false,
+  "editor.gotoLocation.multipleDefinitions": "goto",
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true
+}

@@ -1,0 +1,20 @@
+{
+    "extends": ["@tsconfig/node22/tsconfig.json"],
+    "compilerOptions": {
+        "declaration": true,
+        "declarationMap": true,
+
+        "lib": ["ES2022"],
+        "target": "ES2022",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noUncheckedIndexedAccess": true,
+
+        "rootDir": "./src/ts",
+        "outDir": "./dist",
+    },
+    "include": ["./src/ts/**/*.ts"]
+}
