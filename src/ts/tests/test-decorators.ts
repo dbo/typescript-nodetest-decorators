@@ -6,6 +6,7 @@ import {
     BeforeAll,
     BeforeEach,
     ParameterizedSuite,
+    Suite,
     Test,
     TestWithOptions,
     type TestOptions,
@@ -127,5 +128,14 @@ export class SubClass extends SuperClass {
     async asyncTest(context: TestContext) {
         await new Promise((resolve) => setTimeout(resolve, 100));
         this.seq.push(`SubClass.asyncTest - ${context.name} ${this.iter}:${this.p1}`);
+    }
+}
+
+@Suite
+export class StaticInitTest {
+    static foo = "bar";
+
+    constructor() {
+        assert.equal(StaticInitTest.foo, "bar", "static initialization");
     }
 }

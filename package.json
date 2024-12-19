@@ -1,6 +1,6 @@
 {
     "name": "typescript-nodetest-decorators",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "license": "MIT",
     "type": "module",
     "main": "./dist/nodetest/decorators.js",

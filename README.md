@@ -55,8 +55,14 @@ class MyTest {
 ## Options
 The test options are passed "as is" to `node:test`. There are two enhancements:
 - You can define an additional `diagnostic` string per options that emits a diagnostic message.
-- You can provide options to the suite per `static suiteOptions`. This is particularly helpful in case you sub class from a common base class (which may define suite test options).
 - You can set a default timeout (in milliseconds) per environment variable `NODETEST_DECORATORS_TIMEOUT` (instead of sticking to the default Infinity).
+
+### Common base classes
+Sometimes it's useful to define a common base class for a set of test classes instead of going with a `@ParameterizedSuite` spreading varying properties.
+These base classes could define test cases per `@Test` or hooks like  `@BeforeEach`.
+
+You can also define options on a base class per `static suiteOptions`.
+Defining `static suiteOptions` is not supported on test (sub) classes, but just their base class, because the decorator is executed as a static initializer. Use `@SuiteWithOptions()` or `@ParameterizedSuite({ options: {...} })` to set options on test classes.
 
 ## Installation
 

@@ -73,7 +73,7 @@ export function ParameterizedSuite<T extends {}, CtorT extends SuiteCtor<T>>(arg
     propertyValues?: (
         | any[]
         | {
-              options?: TestOptions;
+              options: TestOptions;
               values: any[];
           }
     )[];
@@ -222,44 +222,54 @@ function suiteOn<T extends {}, CtorT extends SuiteCtor<T>>(
         name += `: ${options.diagnostic}`;
     }
 
-    suite(name, options, (context) => {
-        const inst = new ctor(context);
-        Object.assign(inst, runParams);
+    suite(name, options, (context) =>
+        // next to exec all static initializers:
+        Promise.resolve().then(() => {
+            // re-check that suiteOptions are not defined on the test class itself:
+            if (ctor.suiteOptions && ctor.suiteOptions !== suiteOptions) {
+                throw new TypeError(
+                    `Defining static suiteOptions is not supported on test classes, but just base classes of such, because the decorator is executed as a static initializer, too. Use @SuiteWithOptions() or @ParameterizedSuite({ options: {...} }) to set options on test classes.`,
+                );
+            }
 
-        const map = instanceRel.get(inst);
-        if (map) {
-            for (const [meth, exec] of map.entries()) {
-                const { name, options } = exec;
+            const inst = new ctor(context);
+            Object.assign(inst, runParams);
 
-                const fn = options?.diagnostic
-                    ? async (context: TestContext | SuiteContext) => {
-                          (context as TestContext).diagnostic?.(options.diagnostic!);
-                          await meth.call(inst, context);
-                      }
-                    : meth.bind(inst);
+            const map = instanceRel.get(inst);
+            if (map) {
+                for (const [meth, exec] of map.entries()) {
+                    const { name, options } = exec;
 
-                switch (exec.type) {
-                    case "after":
-                        test.after(fn, options);
-                        break;
-                    case "afterEach":
-                        test.afterEach(fn, options);
-                        break;
-                    case "before":
-                        test.before(fn, options);
-                        break;
-                    case "beforeEach":
-                        test.beforeEach(fn, options);
-                        break;
-                    case "test":
-                        test(name, options, fn);
-                        break;
-                    default:
-                        throw new TypeError(`unexpected type: ${exec.type}`);
+                    const fn = options?.diagnostic
+                        ? async (context: TestContext | SuiteContext) => {
+                              (context as TestContext).diagnostic?.(options.diagnostic!);
+                              await meth.call(inst, context);
+                          }
+                        : meth.bind(inst);
+
+                    switch (exec.type) {
+                        case "after":
+                            test.after(fn, options);
+                            break;
+                        case "afterEach":
+                            test.afterEach(fn, options);
+                            break;
+                        case "before":
+                            test.before(fn, options);
+                            break;
+                        case "beforeEach":
+                            test.beforeEach(fn, options);
+                            break;
+                        case "test":
+                            test(name, options, fn);
+                            break;
+                        default:
+                            throw new TypeError(`unexpected type: ${exec.type}`);
+                    }
                 }
             }
-        }
-    });
+        }),
+    );
 }
 
 /**
