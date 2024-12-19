@@ -65,11 +65,18 @@ export function ParameterizedSuite<T extends {}, CtorT extends SuiteCtor<T>>(arg
      */
     properties?: (keyof T)[];
     /**
-     * Property values to use on each run.
-     * @attention each sub array is required to have the exact
+     * Property values to use on each run, either direct values customized run with name/options.
+     * Options are overriding any options given per suite resp. suiteOptions.
+     * @attention each sub array resp. values array is required to have the exact
      * same number of values as defined per `properties`.
      */
-    propertyValues?: any[][];
+    propertyValues?: (
+        | any[]
+        | {
+              options?: TestOptions;
+              values: any[];
+          }
+    )[];
     /**
      * Test options to pass when running suite.
      */
@@ -78,13 +85,26 @@ export function ParameterizedSuite<T extends {}, CtorT extends SuiteCtor<T>>(arg
     return function ParameterizedSuite(ctor: CtorT) {
         const { options, properties = [], propertyValues: params = [[]] } = args || {};
         params.forEach((run, i) => {
-            if (run.length !== properties.length) {
+            let values: any[];
+            let runOptions = options;
+
+            if (Array.isArray(run)) {
+                values = run;
+            } else {
+                values = run.values;
+                runOptions = {
+                    ...options,
+                    ...run.options,
+                };
+            }
+
+            if (values.length !== properties.length) {
                 throw new Error(
-                    `@ParameterizedSuite: Use exact number of parameters at position ${i} for parameterized fields: [${properties}].`,
+                    `@ParameterizedSuite: Use exact number of values at position ${i} for parameterized fields: [${properties}].`,
                 );
             }
-            const runParams = Object.fromEntries(properties.map((f, i) => [f, run[i]]));
-            suiteOn(options, ctor, `${ctor.name} #${i}`, runParams);
+            const runParams = Object.fromEntries(properties.map((f, i) => [f, values[i]]));
+            suiteOn(runOptions, ctor, `${ctor.name} #${i}`, runParams);
         });
     };
 }

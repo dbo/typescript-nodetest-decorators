@@ -49,7 +49,12 @@ abstract class SuperClass {
     properties: ["iter", "p1"],
     propertyValues: [
         [0, "pp0"],
-        [1, "pp1"],
+        {
+            options: {
+                diagnostic: "second set of params with more options",
+            },
+            values: [1, "pp1"],
+        },
         [2, "pp2"],
     ],
 })
@@ -77,11 +82,15 @@ export class SubClass extends SuperClass {
     afterAll(context: TestContext) {
         this.seq.push(`SubClass.afterAll - ${context.name} ${this.iter}:${this.p1}`);
         const act = this.seq;
+        const diag =
+            this.iter === 1
+                ? "second set of params with more options"
+                : "SuperClass suiteOptions mark as TODO";
 
         const exp = [
-            `SubClass #${this.iter}: SuperClass suiteOptions mark as TODO`,
-            `SuperClass.superBeforeAll - SubClass #${this.iter}: SuperClass suiteOptions mark as TODO`,
-            `SubClass.beforeAll - SubClass #${this.iter}: SuperClass suiteOptions mark as TODO ${this.iter}:pp${this.iter}`,
+            `SubClass #${this.iter}: ${diag}`,
+            `SuperClass.superBeforeAll - SubClass #${this.iter}: ${diag}`,
+            `SubClass.beforeAll - SubClass #${this.iter}: ${diag} ${this.iter}:pp${this.iter}`,
             `SuperClass.superBeforeEach - superTest`,
             `SubClass.beforeEach - superTest ${this.iter}:pp${this.iter}`,
             `SuperClass.superTest - superTest`,
@@ -97,8 +106,8 @@ export class SubClass extends SuperClass {
             `SubClass.asyncTest - asyncTest ${this.iter}:pp${this.iter}`,
             `SuperClass.superAfterEach - asyncTest`,
             `SubClass.afterEach - asyncTest ${this.iter}:pp${this.iter}`,
-            `SuperClass.superAfterAll - SubClass #${this.iter}: SuperClass suiteOptions mark as TODO`,
-            `SubClass.afterAll - SubClass #${this.iter}: SuperClass suiteOptions mark as TODO ${this.iter}:pp${this.iter}`,
+            `SuperClass.superAfterAll - SubClass #${this.iter}: ${diag}`,
+            `SubClass.afterAll - SubClass #${this.iter}: ${diag} ${this.iter}:pp${this.iter}`,
         ];
         assert.equal(act.length, exp.length, "same number of entries");
         act.forEach((v, i) => {

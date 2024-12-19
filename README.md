@@ -30,7 +30,14 @@ Additionally test classes can be parameterized to execute the same test class fo
     properties: ["iter", "p1"],
     propertyValues: [
         [0, "pp0"],
-        [1, "pp1"],
+        {
+            options: {
+                // custom labeling to "MyTest #1":
+                diagnostic: "this second case with pp1",
+                timeout: 500,
+            },
+            values: [1, "pp1"],
+        },
         [2, "pp2"],
     ],
 })
