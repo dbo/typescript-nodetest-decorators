@@ -1,7 +1,7 @@
 # typescript-nodetest-decorators
 
-![CI](https://github.com/dbo/typescript-nodetest-decorators/actions/workflows/ci.yml/badge.svg)
-![NPM Version](https://img.shields.io/npm/v/typescript-nodetest-decorators)
+<a href="https://github.com/dbo/typescript-nodetest-decorators/actions">![CI](https://github.com/dbo/typescript-nodetest-decorators/actions/workflows/ci.yml/badge.svg)</a>
+<a href="https://www.npmjs.com/package/typescript-nodetest-decorators">![NPM Version](https://img.shields.io/npm/v/typescript-nodetest-decorators)</a>
 
 
 Typescript decorators for [node.js test runner](https://nodejs.org/api/test.html) based tests.
