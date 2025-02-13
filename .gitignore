@@ -130,3 +130,4 @@ dist
 .pnp.*
 
 .n4js.projectstate
+.DS_Store
